@@ -12,18 +12,22 @@ public class Vehicle : MonoBehaviour
     public int[] path;
     public int id;
     public bool test;
-    
-    public void SetDefaultProperties(){
+    public float carYOffset;
+
+    public void SetDefaultProperties()
+    {
         effectiveMaxVelocity = maxVelocity;
 
         smoothing = 4;
         acceleration = 0;
 
-        reactionTime = 0.25f; 
+        reactionTime = 0.25f;
         position = 0;
 
         roadIndex = 0;
         stopped = false;
+
+        carYOffset = 0.5f;
     }
 
     public void SetProperties(VehicleConfig config){
@@ -34,6 +38,7 @@ public class Vehicle : MonoBehaviour
         comfortableAccel = config.comfyAccel;
         maxVelocity = config.maxVelocity;
         velocity = config.velocity;
+        carYOffset = config.carYOffset;
         SetDefaultProperties();
     }
     
@@ -80,7 +85,7 @@ public class Vehicle : MonoBehaviour
         Segment currentRoad = simulation.roads[path[roadIndex]];
         float interpolationValue = Mathf.Clamp(position / currentRoad.length, 0f, 1f);
         Vector2 newPos = Vector2.Lerp(currentRoad.start, currentRoad.end, interpolationValue);
-        transform.position = new Vector3(newPos.x, 2, newPos.y);
+        transform.position = new Vector3(newPos.x, carYOffset, newPos.y);
     }
 
     float DesiredDistance(float velocity, float differenceInVelocity){

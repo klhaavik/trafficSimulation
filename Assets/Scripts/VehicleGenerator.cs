@@ -10,9 +10,10 @@ public struct VehicleConfig
     public float comfyAccel;
     public float maxVelocity;
     public float velocity;
+    public float carYOffset;
     public int[] path;
 
-    public VehicleConfig(int l, float minDist, float maxA, float comfyA, float maxV, float v, int[] p)
+    public VehicleConfig(int l, float minDist, float maxA, float comfyA, float maxV, float v, float offset, int[] p)
     {
         length = l;
         minDistance = minDist;
@@ -20,6 +21,7 @@ public struct VehicleConfig
         comfyAccel = comfyA;
         maxVelocity = maxV;
         velocity = v;
+        carYOffset = offset;
         path = p;
     }
 
@@ -32,6 +34,7 @@ public struct VehicleConfig
         maxVelocity = 60f;
         velocity = 30f;
         path = p;
+        carYOffset = 0.5f;
     }
 }
 

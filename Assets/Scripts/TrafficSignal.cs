@@ -8,7 +8,7 @@ public class TrafficSignal
     List<bool[]> cycle;
     public float stopDistance;
     int cycleIndex = 0;
-    float cycleLength = 10f;
+    float cycleLength = 30f;
     float timeSinceLastCycle = 0f;
     float t;
     int i = 0;

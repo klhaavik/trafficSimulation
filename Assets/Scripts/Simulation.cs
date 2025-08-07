@@ -31,6 +31,7 @@ public class Simulation : MonoBehaviour
     public List<VehicleGenerator> vehicleGenerators;
     public GameObject vehiclePrefab;
     public TrafficSignal ts;
+    public float carHeight;
     
     // Start is called before the first frame update
     void Start()
@@ -45,34 +46,34 @@ public class Simulation : MonoBehaviour
         
         roads = new List<Segment>();
         //vertical
-        CreateRoad(new Vector2(-7f, 200f), new Vector2(-7f, 15f), ts, 0);
-        CreateRoad(new Vector2(-7f, 15f), new Vector2(-7f, -200f), ts, 0);
+        CreateRoad(new Vector2(-7f, 100f), new Vector2(-7f, 15f), ts, 0);
+        CreateRoad(new Vector2(-7f, 15f), new Vector2(-7f, -100f), ts, 0);
 
-        CreateRoad(new Vector2(7f, -200f), new Vector2(7f, -15f), ts, 0);
-        CreateRoad(new Vector2(7f, -15f), new Vector2(7f, 200f), ts, 0);
+        CreateRoad(new Vector2(7f, -100f), new Vector2(7f, -15f), ts, 0);
+        CreateRoad(new Vector2(7f, -15f), new Vector2(7f, 100f), ts, 0);
 
         //horizontal
-        CreateRoad(new Vector2(200f, 7f), new Vector2(15f, 7f), ts, 1);
-        CreateRoad(new Vector2(15f, 7f), new Vector2(-200f, 7f), ts, 1);
+        CreateRoad(new Vector2(100f, 7f), new Vector2(15f, 7f), ts, 1);
+        CreateRoad(new Vector2(15f, 7f), new Vector2(-100f, 7f), ts, 1);
 
-        CreateRoad(new Vector2(-200f, -7f), new Vector2(-15f, -7f), ts, 1);
-        CreateRoad(new Vector2(-15f, -7f), new Vector2(200f, -7f), ts, 1);
+        CreateRoad(new Vector2(-100f, -7f), new Vector2(-15f, -7f), ts, 1);
+        CreateRoad(new Vector2(-15f, -7f), new Vector2(100f, -7f), ts, 1);
 
         vehicleGenerators = new List<VehicleGenerator>();
         List<(int Weight, VehicleConfig Config)> vehs = new List<(int Weight, VehicleConfig Config)>();
-        vehs.Add((1, new VehicleConfig(8, 4f, 20f, 10f, 50f, 25f, new int[] {0, 1})));
+        vehs.Add((1, new VehicleConfig(8, 4f, 20f, 10f, 50f, 25f, carHeight, new int[] {0, 1})));
         CreateVehicleGenerator(vehs, 20);
 
         vehs.RemoveAt(0);
-        vehs.Add((1, new VehicleConfig(8, 4f, 20f, 10f, 50f, 25f, new int[] {2, 3})));
+        vehs.Add((1, new VehicleConfig(8, 4f, 20f, 10f, 50f, 25f, carHeight, new int[] {2, 3})));
         CreateVehicleGenerator(vehs, 20);
 
         vehs.RemoveAt(0);
-        vehs.Add((1, new VehicleConfig(8, 4f, 20f, 10f, 50f, 25f, new int[] {4, 5})));
+        vehs.Add((1, new VehicleConfig(8, 4f, 20f, 10f, 50f, 25f, carHeight, new int[] {4, 5})));
         CreateVehicleGenerator(vehs, 20);
 
         vehs.RemoveAt(0);
-        vehs.Add((1, new VehicleConfig(8, 4f, 20f, 10f, 50f, 25f, new int[] {6, 7})));
+        vehs.Add((1, new VehicleConfig(8, 4f, 20f, 10f, 50f, 25f, carHeight, new int[] {6, 7})));
         CreateVehicleGenerator(vehs, 20);
     }
 
@@ -142,9 +143,11 @@ public class Simulation : MonoBehaviour
 
     public void CreateVehicle(VehicleConfig config){
         Segment road = roads[config.path[0]];
-        float rotationAngle = Vector2.SignedAngle(road.end - road.start, Vector2.right);
+        float rotationAngle = Vector2.SignedAngle(Vector2.right, road.end - road.start);
+        print(road.start + " " + road.end + " " + (road.end - road.start) + " " + rotationAngle);
+
         
-        GameObject test = Instantiate(vehiclePrefab, new Vector3(road.start.x, 2, road.start.y), Quaternion.Euler(new Vector3(0, rotationAngle - 90, 0)));
+        GameObject test = Instantiate(vehiclePrefab, new Vector3(road.start.x, config.carYOffset, road.start.y), Quaternion.Euler(new Vector3(0, -rotationAngle, 0)));
         
         Vehicle vehicle = test.AddComponent<Vehicle>();
 

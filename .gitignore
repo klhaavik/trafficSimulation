@@ -1,0 +1,7 @@
+*.blend
+Library/*
+Logs/*
+Packages/*
+ProjectSettings/*
+UserSettings/*
+Temp/*
